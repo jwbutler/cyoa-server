@@ -21,7 +21,12 @@ app.get('/:sceneId', (request, response) => {
   sceneHandler({ sceneId }, response, getOrCreateSession(request));
 });
 
-app.get('/:sceneId/item/:item', (request, response) => {
+app.get('/:sceneId/item/:item/pickup', (request, response) => {
+  const { sceneId, item } = request.params;
+  pickupItemHandler({ sceneId, item }, response, getOrCreateSession(request));
+});
+
+app.get('/:sceneId/item/:item/drop', (request, response) => {
   const { sceneId, item } = request.params;
   pickupItemHandler({ sceneId, item }, response, getOrCreateSession(request));
 });

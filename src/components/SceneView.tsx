@@ -6,62 +6,73 @@ type Props = Readonly<{
 }>;
 
 export const SceneView = ({ scene, session }: Props) => {
-  type ExitLinkProps = Readonly<{
-    direction: string;
-    toSceneId: string;
-  }>;
-
-  const ExitLink = ({ direction, toSceneId }: ExitLinkProps) => {
-    const toScene = session.scenes.find(s => s.id === toSceneId);
-    if (!toScene) {
-      throw new Error();
-    }
-    const href = `/${scene.id}/${direction}`;
-    const label = `${direction} -> ${toScene.name}`;
-    return <a href={href}>{label}</a>;
-  };
-
-  type ItemLinkProps = Readonly<{
-    item: string
-  }>;
-
-  const ItemLink = ({ item }: ItemLinkProps) => {
-    const href = `/${scene.id}/item/${item}`;
-    const label = item;
-    return <a href={href}>{label}</a>;
-  };
-
-  return (
-    <div>
-      <div>{scene.name}</div>
+  const header = (
+    <>
+      <h2>{scene.name}</h2>
       <div>{scene.description}</div>
-      <div>Items:</div>
+    </>
+  );
+
+  const items = scene.items.length > 0 ? (
+    <>
+      <h3>Items:</h3>
       <ul>
         {scene.items.map(item => (
           <li key={item}>
-            <ItemLink item={item}/>
+            <a href={`/${scene.id}/item/${item}/pickup`}>{item}</a>
           </li>
         ))}
       </ul>
-      <div>Exits:</div>
+    </>
+  ) : undefined;
+  
+  const exits = (
+    <>
+      <h3>Exits:</h3>
       <ul>
         {
-          Object.entries(scene.exits).map(([direction, toSceneId]) => (
-            <li key={direction}>
-              <ExitLink direction={direction} toSceneId={toSceneId}/>
-            </li>
-          ))
+          Object.entries(scene.exits).map(([direction, toSceneId]) => {
+            const toScene = session.scenes.find(s => s.id === toSceneId);
+            if (!toScene) {
+              throw new Error();
+            }
+            return (
+              <li key={direction}>
+                <a href={`/${scene.id}/${direction}`}>
+                  {`${direction} -> ${toScene.name}`}
+                </a>
+              </li>
+            );
+          })
         }
       </ul>
-      <hr/>
-      <div>You are carrying:</div>
+    </>
+  );
+  
+  const inventory = (
+    <>
+      <h3>Inventory:</h3>
       <ul>
         {session.items.map(item => (
           <li key={item}>{item}</li>
         ))}
       </ul>
-      <hr />
-      <div>Session ID: {session.id}</div>
+    </>
+  );
+  
+  const footer = (
+    <div>Session ID: {session.id}</div>
+  );
+
+  return (
+    <div>
+      {header}
+      {items}
+      {exits}
+      <hr/>
+      {inventory}
+      <hr/>
+      {footer}
     </div>
   );
 };

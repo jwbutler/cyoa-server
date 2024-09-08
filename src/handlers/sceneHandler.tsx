@@ -8,13 +8,13 @@ type Props = Readonly<{
 
 export const sceneHandler: Handler<Props> = ({ sceneId }, response, session) => {
   if (sceneId !== session.currentSceneId) {
-    response.status(400).send();
+    response.redirect('/');
     return;
   }
 
   const scene = session.scenes.find(s => s.id === sceneId);
   if (!scene) {
-    response.status(400).send();
+    response.redirect('/');
     return;
   }
 

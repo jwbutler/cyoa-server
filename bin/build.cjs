@@ -3,7 +3,7 @@
 const { build } = require('esbuild');
 
 build({
-  entryPoints: ['./src/main.tsx'],
+  entryPoints: ['./src/main.ts'],
   bundle: true,
   platform: 'node',
   target: 'node18',

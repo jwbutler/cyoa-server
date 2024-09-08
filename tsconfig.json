@@ -16,11 +16,7 @@
     "esModuleInterop": true,
     "jsx": "react-jsx",
     "plugins": [],
-    "types": [],
-    "paths": {
-      "*": ["*", "*.ts", "*.tsx"],
-      "/": ["/public"]
-    }
+    "types": []
   },
   "ts-node": {
     "esm": true
